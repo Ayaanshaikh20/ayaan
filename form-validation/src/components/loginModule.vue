@@ -44,7 +44,7 @@
         console.log("Password: ", this.userdetails.password)
 
       }
-    }
+    },
   }
   </script>
   

@@ -6,34 +6,25 @@
         <td>City</td>
         <td>Name</td>
       </tr>
-      <tr v-for="item in userData[0]" :key="item.id">
+      <tr>
+        <td>{{ city }}</td>
+        <td>{{ name }}</td>
+      </tr>
+      <!-- <tr v-for="item in userData[0]" :key="item.id">
         <td>{{ item.city }}</td>
         <td>{{ item.name }}</td>
-      </tr>
+      </tr> -->
     </table>
   </div>
 </template>
-
 <script>
-
 export default {
-  data() {
-    return {
-      userData: []
+    props: ['posts'],
+    data() {
+        return {
+            
+        }
     }
-  },
-
-  mounted() {
-    const apicall = async () => {
-      const response = await this.$http.get("https://mocki.io/v1/d4867d8b-b5d5-4a48-a4ab-79131b5809b8")
-      const result = await response.data
-      console.log(result)
-      this.userData.push(result)
-      console.log(this.userData)   //sunt aut facere repellat provident occaecati excepturi optio reprehenderit
-    }
-
-    apicall()
-  }
 }
 </script>
 

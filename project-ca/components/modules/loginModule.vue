@@ -9,6 +9,7 @@
       {{ error }}
     </div>
     <button :disabled="!email && !password" class="login-btn" @click="login()">Login</button>
+
   </div>
 </template>
   
@@ -22,20 +23,20 @@ export default {
       allowedUserPassword: "1234",
       allowedAdminEmail: "ayaan.s@codearray.tech",
       allowedAdminPassword: "12345",
-      error: "",
-      isloggedin: false
+      error: ""
     }
   },
   methods: {
     login() {
       if (this.email === this.allowedUserEmail && this.password === this.allowedUserPassword) {
-        localStorage.setItem("usertoken", 123456)
-        this.$router.replace("/home");
-        this.isloggedin = true
+        localStorage.setItem("isLoggedinAsUser", true)
+        localStorage.removeItem("isLoggedinAsAdmin")
+        this.$router.push("/home");
         console.log(this.$router.options.routes)
       } else if (this.email === this.allowedAdminEmail && this.password === this.allowedAdminPassword) {
-        localStorage.setItem("usertoken", 123456)
-        this.$router.push("/admin")
+        localStorage.setItem("isLoggedinAsAdmin", true)
+        localStorage.removeItem("isLoggedinAsUser")
+        this.$router.push("/home")
       } else {
         this.error = "Invalid Credentials";
         setTimeout(() => {

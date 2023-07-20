@@ -1,71 +1,88 @@
 <template>
-    <div>
-      <nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
+  <div>
+    <nav class="navbar">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <router-link to="home/todolist" class="link" :is="isDisabled ? 'span' : 'router-link'">TodoList</router-link>
+          <router-link to="/home/todolist" class="link todolist">TodoList</router-link>
         </li>
         <li class="nav-item">
-          <router-link to="/admin" class="link">Admin</router-link>
+          <router-link to="/home/admin" class="link admin" v-if="isAdmin">Admin</router-link>
         </li>
         <li>
-            <router-link to="/login" class="link"><button class="login-btn">Logout</button></router-link>
+          <router-link to="/login" class="link logout">
+            <button class="logout-btn" @click="logoutUser()">Logout</button>
+          </router-link>
         </li>
       </ul>
+    </nav>
+    <div class="view">
+      <router-view></router-view>
     </div>
   </div>
-
-</nav>
-    <router-view></router-view>
-    </div>
 </template>
 
-<script>
+<script scoped>
 export default {
-    methods: {
-        checkRoute() {
-            console.log(this.$router.path)
-        }
-    },
-    mounted() {
-    console.log(this.$router.path)
+  data() {
+    return {
+      isAdmin: false
     }
+  },
+  created() {
+    this.isAdmin = false
+    if (localStorage.getItem('isLoggedinAsAdmin')) {
+      this.isAdmin = true
+    } else {
+      this.isAdmin = false
+    }
+  },
+  methods: {
+    logoutUser() {
+      localStorage.removeItem('isLoggedinAsAdmin')
+      localStorage.removeItem('isLoggedinAsUser')
+    }
+  }
 }
 </script>
 
+
+
 <style scoped>
+.navbar {
+  background-color: #f8f9fa;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  align-items: center;
+  margin: 0;
+}
+
+.navbar-nav {
+  display: flex;
+  flex-direction: row;
+
+}
+
 .link {
   margin: 0 10px;
   font-weight: bold;
+  color: #0060B6;
+  text-decoration: none;
 }
 
-.login-btn {
-    margin-top: 5px;
-    width: 100px;
-    height: 40px;
-    background-color: blue;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
-    margin-left: 1080px;
+.link:hover {
+  color: #00A0C6;
 }
 
-a {
-    color: #0060B6;
-    text-decoration: none;
-    font-size: 21px;
+.logout-btn {
+  background-color: blue;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-left: 1000px;
 }
-
-a:hover {
-    color:#00A0C6; 
-    text-decoration:none; 
-    cursor:pointer;  
-}
-
 </style>

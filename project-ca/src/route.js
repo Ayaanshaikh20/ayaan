@@ -7,31 +7,50 @@ import adminModule from "../components/modules/AdminModule.vue"
 // import App from "../src/App.vue"
 Vue.use(VueRouter);
 
-// const userisLoggedIn = () => {
-//   const token = localStorage.getItem("usertoken");
-//   if (token) {
-//     return true;
-//   } else {
-//     return false;
-//   }
-// };
+const adminisLoggedIn = () => {
+  const token = localStorage.getItem("isLoggedinAsAdmin");
+  if (token) {
+    return true;
+  } else {
+    return false;
+  }
+};
+adminisLoggedIn()
 
+const userisLoggedIn = () => {
+  const token = localStorage.getItem("isLoggedinAsUser");
+  if (token) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+userisLoggedIn()
 
 const router = new VueRouter({
   mode: "history",
   routes: [
     {path: '/', redirect: '/login'},
     {path: '/login', name: 'login', component: loginModule},
-    {path: '/home', component: homeModule, children: [{path: 'todolist', component: TodoList}]},
-    {path: '/admin', component: adminModule}]
+    {path: '/home', component: homeModule, children: [{path: 'todolist', component: TodoList} , {path: 'admin', component: adminModule, props:  {
+      allowedAdminEmail: "ayaan.s@codearray.tech", allowedAdminPassword: "12345"}}]
+    }]
 });
 
-// router.beforeEach((to , from, next) => {
-//   console.log(to , "---")
-//   if(to.path==='/login'){
-    
-//     next()
-//   }
-// })
+router.beforeEach((to, from, next) => {
+  if (adminisLoggedIn() || userisLoggedIn()) {
+    if (to.path === "/login") {
+      next('/home');
+    } else {
+      next();
+    }
+  } else {
+    if (to.path === "/login") {
+      next();
+    } else {
+      next('/login');
+    }
+}})
   
 export default router

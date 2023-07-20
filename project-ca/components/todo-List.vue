@@ -28,7 +28,8 @@ export default {
       task: '',
       todos: [],
       isempty: false,
-      currentbtn: 'Add'
+      currentbtn: 'Add',
+      apiCalled: false
 
     }
   },
@@ -94,9 +95,23 @@ export default {
     },
   },
   mounted() {
-    const savedTasks = JSON.parse(localStorage.getItem('tasks'));
-    if (savedTasks) {
-      this.todos = savedTasks;
+    if (!this.apicalled) {
+      this.apicalled = true
+      const apicall = async () => {
+        const response = await this.$http.get("https://mocki.io/v1/d4867d8b-b5d5-4a48-a4ab-79131b5809b8")
+        const result = await response.data
+        for (let i in result) {
+          const details = {
+            taskid: result[i].name,
+            taskname: result[i].name,
+            iscompleted: false
+          }
+          this.todos.push(details)
+          this.todos = JSON.parse(localStorage.getItem('tasks'))
+        }
+      }
+
+      apicall()
     }
   }
 }

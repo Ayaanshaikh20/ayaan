@@ -40,12 +40,8 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (adminisLoggedIn() || userisLoggedIn()) {
-    if (to.path === "/login") {
-      next('/home');
-    } else {
-      next();
-    }
-  } else {
+      next(true);
+    }else {
     if (to.path === "/login") {
       next();
     } else {

@@ -3,7 +3,7 @@
     <nav class="navbar">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <router-link to="/home/todolist" class="link todolist">TodoList</router-link>
+          <router-link to="/todolist" class="link todolist">TodoList</router-link>
         </li>
         <li class="nav-item">
           <router-link to="/home/admin" class="link admin" v-if="isAdmin">Admin</router-link>

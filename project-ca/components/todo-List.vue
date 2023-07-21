@@ -1,6 +1,11 @@
 <template>
   <body>
     <div class="container">
+      <nav class="navbar">
+        <router-link to="/login" class="link logout">
+            <button class="logout-btn" @click="logoutUser()">Logout</button>
+        </router-link>
+      </nav>
       <div class="input_container">
         <h1>My To Do List</h1>
         <input id="inputBox" type="text" placeholder="Add a new task.." v-model="task" @keyup.enter="addtask($event)"
@@ -34,6 +39,10 @@ export default {
     }
   },
   methods: {
+    logoutUser() {
+      localStorage.removeItem('isLoggedinAsAdmin')
+      localStorage.removeItem('isLoggedinAsUser')
+    },
     addtask() {
       if (this.task === '') {
         this.isempty = true;
@@ -81,7 +90,6 @@ export default {
       if (this.todos.length != 0) {
         this.todos.splice(index, 1)
         localStorage.setItem('tasks', JSON.stringify(this.todos))
-        // this.currentbtn = 'remove'
       }
       if (this.todos.length == 0) {
         localStorage.removeItem('tasks')
@@ -92,22 +100,18 @@ export default {
       const completedtask = this.todos.find((Todo) => Todo.taskname === todo)
       completedtask.iscompleted = !completedtask.iscompleted
       localStorage.setItem('tasks', JSON.stringify(this.todos))
-      // this.currentbtn = 'completed'
     },
-  },
-  mounted() {
-    this.apicalled = false
-    if (!this.apicalled) {
-      localStorage.setItem('apicalled', true)
+    callingApi() {
+    if (JSON.parse(localStorage.getItem('tasks')) == null) {
+      localStorage.setItem('tasks', JSON.stringify(this.todos))
+      console.log('called api')
       const apicall = async () => {
         const response = await this.$http.get("https://mocki.io/v1/d4867d8b-b5d5-4a48-a4ab-79131b5809b8")
         const result = await response.data
-
-        // const savedTasks = JSON.parse(localStorage.getItem('tasks'));
-        // if (savedTasks) {
-        //   this.todos = savedTasks;
-        // }
-
+        console.log(result)
+        const removeItem = result.findIndex(item => item.name == 'Rosa Park')
+        console.log(result.length)
+        result.splice(removeItem, 1)  
         for (let i in result) {
           const details = {
             taskid: result[i].name,
@@ -115,14 +119,19 @@ export default {
             iscompleted: false
           }
           this.todos.push(details)
-          console.log(details)
+          
         }
         localStorage.setItem('tasks', JSON.stringify(this.todos))
-
       }
 
       apicall()
+    } else {
+      this.todos = JSON.parse(localStorage.getItem('tasks')) 
     }
+    }
+  },
+  mounted() {
+      this.callingApi()
   }
 }
 </script>
@@ -135,6 +144,28 @@ export default {
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
+}
+
+.navbar {
+  background-color: white;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  align-items: center;
+  margin: 0;
+  width: 200%;
+}
+
+.logout-btn {
+  background-color: blue;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-left: 1200px;
 }
 
 body {

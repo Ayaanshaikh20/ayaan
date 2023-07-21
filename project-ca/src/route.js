@@ -33,9 +33,10 @@ const router = new VueRouter({
   routes: [
     {path: '/', redirect: '/login'},
     {path: '/login', name: 'login', component: loginModule},
-    {path: '/home', component: homeModule, children: [{path: 'todolist', component: TodoList} , {path: 'admin', component: adminModule, props:  {
+    {path: '/home', component: homeModule, children: [{path: 'admin', component: adminModule, props:  {
       allowedAdminEmail: "ayaan.s@codearray.tech", allowedAdminPassword: "12345"}}]
-    }]
+    },
+    {path: '/todolist', component: TodoList}]
 });
 
 router.beforeEach((to, from, next) => {

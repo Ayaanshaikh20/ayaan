@@ -31,7 +31,7 @@ export default {
       if (this.email === this.allowedUserEmail && this.password === this.allowedUserPassword) {
         localStorage.setItem("isLoggedinAsUser", true)
         localStorage.removeItem("isLoggedinAsAdmin")
-        this.$router.push("/home");
+        this.$router.push("/todolist");
         console.log(this.$router.options.routes)
       } else if (this.email === this.allowedAdminEmail && this.password === this.allowedAdminPassword) {
         localStorage.setItem("isLoggedinAsAdmin", true)

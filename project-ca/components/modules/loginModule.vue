@@ -9,7 +9,7 @@
       {{ error }}
     </div>
     <button :disabled="!email && !password" class="login-btn" @click="login()">Login</button>
-
+    <p>Do not have any account register here <router-link to="/signup">Signup</router-link></p>
   </div>
 </template>
   

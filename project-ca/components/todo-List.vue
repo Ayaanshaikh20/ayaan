@@ -123,7 +123,6 @@ export default {
         }
         localStorage.setItem('tasks', JSON.stringify(this.todos))
       }
-
       apicall()
     } else {
       this.todos = JSON.parse(localStorage.getItem('tasks')) 

@@ -4,6 +4,7 @@ import loginModule from "../components/modules/loginModule.vue"
 import homeModule from "../components/modules/homePage.vue"
 import TodoList from "../components/todo-List.vue"
 import adminModule from "../components/modules/AdminModule.vue"
+import SignupModule from "../components/modules/SignupModule.vue"
 // import App from "../src/App.vue"
 Vue.use(VueRouter);
 
@@ -36,14 +37,15 @@ const router = new VueRouter({
     {path: '/home', component: homeModule, children: [{path: 'admin', component: adminModule, props:  {
       allowedAdminEmail: "ayaan.s@codearray.tech", allowedAdminPassword: "12345"}}]
     },
-    {path: '/todolist', component: TodoList}]
+    {path: '/todolist', component: TodoList},
+    {path: '/signup', component: SignupModule}]
 });
 
 router.beforeEach((to, from, next) => {
   if (adminisLoggedIn() || userisLoggedIn()) {
       next(true);
     }else {
-    if (to.path === "/login") {
+    if (to.path === "/login" || to.path === "/signup") {
       next();
     } else {
       next('/login');

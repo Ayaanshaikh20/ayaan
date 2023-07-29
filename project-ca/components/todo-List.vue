@@ -3,7 +3,7 @@
     <div class="container">
       <nav class="navbar">
         <router-link to="/login" class="link logout">
-            <button class="logout-btn" @click="logoutUser()">Logout</button>
+          <button class="logout-btn" @click="logoutUser()">Logout</button>
         </router-link>
       </nav>
       <div class="input_container">
@@ -15,10 +15,13 @@
       <ul class="todolist" id="todoList">
         <li class="todostask" v-for="(todo, taskindex) in todos" :key="taskindex">
           <p class="para" :id="taskindex" :class="{ active: todo.iscompleted }">{{ todo.taskname }}</p>
-          <button class="edit" @click="editTask(todo.taskname, taskindex)">Edit</button>
-          <button class="delete" @click="removeTask(taskindex)">Remove</button>
-          <button class="completed" @click="completedTask(todo.taskname)" ref="clickvalue">{{ todo.iscompleted ?
-            'Incompleted' : 'Completed' }}</button>
+          <b-button rounded variant="success" class="ms-2 p-1 fw-bold"
+            @click="editTask(todo.taskname, taskindex)">Edit</b-button>
+          <b-button rounded variant="danger" class="ms-2 p-1 fw-bold" @click="removeTask(taskindex)">Remove</b-button>
+          <b-button rounded variant="warning" class="ms-2 p-1 fw-bold" @click="completedTask(todo.taskname)"
+            ref="clickvalue">{{
+              todo.iscompleted ?
+              'Incompleted' : 'Completed' }}</b-button>
         </li>
       </ul>
     </div>
@@ -102,35 +105,35 @@ export default {
       localStorage.setItem('tasks', JSON.stringify(this.todos))
     },
     callingApi() {
-    if (JSON.parse(localStorage.getItem('tasks')) == null) {
-      localStorage.setItem('tasks', JSON.stringify(this.todos))
-      console.log('called api')
-      const apicall = async () => {
-        const response = await this.$http.get("https://mocki.io/v1/d4867d8b-b5d5-4a48-a4ab-79131b5809b8")
-        const result = await response.data
-        console.log(result)
-        const removeItem = result.findIndex(item => item.name == 'Rosa Park')
-        console.log(result.length)
-        result.splice(removeItem, 1)  
-        for (let i in result) {
-          const details = {
-            taskid: result[i].name,
-            taskname: result[i].name,
-            iscompleted: false
-          }
-          this.todos.push(details)
-          
-        }
+      if (JSON.parse(localStorage.getItem('tasks')) == null) {
         localStorage.setItem('tasks', JSON.stringify(this.todos))
+        console.log('called api')
+        const apicall = async () => {
+          const response = await this.$http.get("https://mocki.io/v1/d4867d8b-b5d5-4a48-a4ab-79131b5809b8")
+          const result = await response.data
+          console.log(result)
+          const removeItem = result.findIndex(item => item.name == 'Rosa Park')
+          console.log(result.length)
+          result.splice(removeItem, 1)
+          for (let i in result) {
+            const details = {
+              taskid: result[i].name,
+              taskname: result[i].name,
+              iscompleted: false
+            }
+            this.todos.push(details)
+
+          }
+          localStorage.setItem('tasks', JSON.stringify(this.todos))
+        }
+        apicall()
+      } else {
+        this.todos = JSON.parse(localStorage.getItem('tasks'))
       }
-      apicall()
-    } else {
-      this.todos = JSON.parse(localStorage.getItem('tasks')) 
-    }
     }
   },
   mounted() {
-      this.callingApi()
+    this.callingApi()
   }
 }
 </script>
@@ -253,34 +256,6 @@ body {
 
 .active {
   text-decoration: line-through;
-}
-
-.completed {
-  margin-left: 15px;
-  padding: 2px;
-  background-color: orange;
-  color: white;
-  border-color: white;
-  cursor: pointer;
-}
-
-.edit {
-  margin-right: 2px;
-  padding: 2px;
-  width: 40px;
-  background-color: green;
-  color: white;
-  border-color: white;
-  cursor: pointer;
-}
-
-.delete {
-  margin-right: 15px;
-  padding: 2px;
-  background-color: red;
-  color: white;
-  border-color: white;
-  cursor: pointer;
 }
 </style>
     

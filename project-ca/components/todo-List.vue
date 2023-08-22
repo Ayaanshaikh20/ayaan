@@ -7,7 +7,7 @@
         </router-link>
       </nav>
       <div class="input_container">
-        <h1>To Do List</h1>
+        <h1>My To Do List</h1>
         <input id="inputBox" type="text" placeholder="Add a new task.." v-model="task" @keyup.enter="addtask($event)"
           ref="inputbox" />
         <button id="addButton" @click="addtask()">{{ currentbtn }}</button>
